@@ -39,4 +39,10 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
+        volumeMounts:
+        - name: latencystore
+          mountPath: /latency
+      volumes:
+      - name: latencystore
+        emptyDir: {}
       restartPolicy: Always
