@@ -10,16 +10,19 @@ import datetime as dt
 import traceback
 import os
 import sys
+import socket
 
-# Configuration via env vars
+# Configuration (use env vars or defaults)
 PING_COUNT   = int(os.getenv("PING_COUNT", "4"))
 SLEEP_CYCLE  = int(os.getenv("SLEEP_INTERVAL", "60"))
 PING_TIMEOUT = int(os.getenv("PING_TIMEOUT", "15"))
 KUBECTL_TIMEOUT = int(os.getenv("KUBECTL_TIMEOUT", "10"))
 
-def ts(msg: str) -> str:
-    """timestamped log helper"""
-    print(f"[{dt.datetime.now():%Y-%m-%d %H:%M:%S}] {msg}", flush=True)
+# For node/pod identity tagging in logs (K8s sets HOSTNAME to pod name, but we go for node name for clarity)
+NODE_NAME = os.environ.get("NODE_NAME", socket.gethostname())
+
+def ts(msg: str) -> None:
+    print(f"[{dt.datetime.now():%Y-%m-%d %H:%M:%S}][{NODE_NAME}] {msg}", flush=True)
 
 def get_node_ips() -> list:
     ts("Fetching node IPs with kubectl…")

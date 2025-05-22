@@ -14,7 +14,7 @@ spec:
       labels:
         app: latency-measure
     spec:
-      # No need for special ServiceAccount anymore since we don't use kubectl
+      serviceAccountName: latency-measure-sa  # <<<<<< KEY LINE
       containers:
       - name: measure
         image: IMAGE_PLACEHOLDER
@@ -23,9 +23,12 @@ spec:
           value: "60"
         - name: PING_COUNT
           value: "4"
-        # Optional: Specify known node IPs if you have them
-        # - name: NODE_IPS
-        #   value: "192.168.1.10,192.168.1.11,192.168.1.12"
+        - name: PING_TIMEOUT
+          value: "15"
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         resources:
           requests:
             cpu: 50m
@@ -33,7 +36,6 @@ spec:
           limits:
             cpu: 250m
             memory: 128Mi
-        # To prevent permission issues with /etc/hosts
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
