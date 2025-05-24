@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: latency-measure
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: latency-measure
+  template:
+    metadata:
+      labels:
+        app: latency-measure
+    spec:
+      serviceAccountName: latency-measure-sa
+      containers:
+        - name: measure
+          image: {{ .Values.daemonset.image }}
+          volumeMounts:
+            - mountPath: /latency
+              name: latencystore
+      volumes:
+        - name: latencystore
+          persistentVolumeClaim:
+            claimName: {{ .Values.latencyPVC.name }}

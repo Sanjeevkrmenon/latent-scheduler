@@ -1,0 +1,17 @@
+namespace: kube-system
+
+latencyPVC:
+  name: latency-pvc
+  storageClassName: ""
+  size: 1Gi
+
+daemonset:
+  image: sanjeevkrmenon/latency-measure:latest
+
+aggregator:
+  image: sanjeevkrmenon/latency-aggregator:latest
+  schedule: "*/1 * * * *"
+
+scheduler:
+  image: sanjeevkrmenon/latent-scheduler:scheduler1
+  replicas: 1
