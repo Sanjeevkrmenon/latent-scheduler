@@ -1,0 +1,7 @@
+apiVersion: v2
+name: latency-aware-scheduler
+description: |
+  Deploys a latency-aware scheduler, with DaemonSet latency tester, aggregator, custom scheduler, and required RBAC resources.
+type: application
+version: 0.1.1
+appVersion: "1.0"
