@@ -1,13 +1,25 @@
 #!/bin/bash
 
-# Build and push Docker image
-docker build -t sanjeevkrmenon/latent-scheduler:scheduler1 .
-docker push sanjeevkrmenon/latent-scheduler:scheduler1
+set -euo pipefail
 
-# Set file paths (we're already in the scheduler directory)
-SCHEDULER_DEPLOYMENT=./scheduler-deployment.yaml
-RBAC_CONFIG=./scheduler-rbac.yaml
+# ---- Config ----
+IMAGE_NAME="sanjeevkrmenon/latent-scheduler:scheduler1"
+SCHEDULER_DEPLOYMENT="./scheduler-deployment.yaml"
+RBAC_CONFIG="./scheduler-rbac.yaml"
+DOCKERFILE="."
 
-# Apply RBAC and deploy the updated scheduler
-kubectl apply -f $RBAC_CONFIG
-kubectl apply -f $SCHEDULER_DEPLOYMENT
+# ---- Build and Push ----
+echo "=== Building Docker image: $IMAGE_NAME ==="
+docker build -t "$IMAGE_NAME" $DOCKERFILE
+
+echo "=== Pushing Docker image: $IMAGE_NAME ==="
+docker push "$IMAGE_NAME"
+
+# ---- Kubernetes Apply ----
+echo "=== Applying scheduler RBAC ==="
+kubectl apply -f "$RBAC_CONFIG"
+
+echo "=== Applying scheduler deployment ==="
+kubectl apply -f "$SCHEDULER_DEPLOYMENT"
+
+echo "=== Scheduler deployment/update complete! ==="

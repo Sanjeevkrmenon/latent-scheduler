@@ -15,12 +15,12 @@ spec:
     spec:
       serviceAccountName: my-latency-scheduler-sa
       containers:
-      - name: scheduler
-        image: sanjeevkrmenon/latent-scheduler:scheduler1
-        # The scheduler binary expects the latency JSON available at /latency
-        volumeMounts:
-        - name: latencystore
-          mountPath: /latency
+        - name: scheduler
+          image: sanjeevkrmenon/latent-scheduler:scheduler1    # REPLACE
+          volumeMounts:
+            - name: latencystore
+              mountPath: /latency
       volumes:
-      - name: latencystore
-        emptyDir: {}    # (for dev only, in prod use NFS or other shared storage)
+        - name: latencystore
+          persistentVolumeClaim:
+            claimName: latency-pvc

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: latency-aware-testpod
+  labels:
+    latency-aware: "true"
+spec:
+  schedulerName: my-latency-scheduler
+  containers:
+    - name: sleep
+      image: busybox
+      command: ["sleep", "10000"]

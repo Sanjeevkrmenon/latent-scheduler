@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: latency-scheduler-test
+spec:
+  schedulerName: my-latency-scheduler  # This must match the name your custom scheduler registers with (as in your deployment)
+  containers:
+  - name: pause
+    image: k8s.gcr.io/pause:3.5

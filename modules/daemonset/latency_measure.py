@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-#
-# Kubernetes node-to-node latency reporter (per-node row writer)
-#
 
 import subprocess
 import time
@@ -18,7 +15,7 @@ SLEEP_CYCLE  = int(os.getenv("SLEEP_INTERVAL", "60"))
 PING_TIMEOUT = int(os.getenv("PING_TIMEOUT", "15"))
 KUBECTL_TIMEOUT = int(os.getenv("KUBECTL_TIMEOUT", "10"))
 
-# Node identity (set via env or use pod/node name)
+# Use true node name (from DaemonSet env)
 NODE_NAME = os.environ.get("NODE_NAME", socket.gethostname())
 
 def ts(msg: str) -> None:
@@ -118,7 +115,7 @@ def main() -> None:
                         my_row[dst_node] = None
                         ts(f"Ping {NODE_NAME} -> {dst_node} ({dst_ip}): loss={loss}%, RTT not available")
 
-            # Write just this node's row
+            # Write just this node's row (by node name)
             try:
                 os.makedirs("/latency", exist_ok=True)
                 path = f"/latency/{NODE_NAME}.json"

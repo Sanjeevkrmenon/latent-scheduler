@@ -13,7 +13,7 @@ NAMESPACE="${NAMESPACE:-kube-system}"
 IMAGE_NAME="${IMAGE_NAME:-latent-scheduler}"   # for optional docker rmi
 
 echo "▶ Deleting DaemonSet / Deployment / Pods labelled app=latency-measure …"
-kubectl delete daemonset   latency-measure -n "$NAMESPACE" --ignore-not-found
+kubectl delete Daemonset   latency-measure -n "$NAMESPACE" --ignore-not-found
 kubectl delete deployment  latency-measure -n "$NAMESPACE" --ignore-not-found
 
 # Anything else with the label in that namespace
