@@ -2,9 +2,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: latency-aggregator
-  namespace: {{ .Values.namespace }}
+  namespace: kube-system
 spec:
-  schedule: "{{ .Values.aggregator.schedule }}"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
@@ -12,7 +12,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: aggregator
-              image: {{ .Values.aggregator.image }}
+              image: sanjeevkrmenon/latency-aggregator:latest
               command: ["python", "/aggregator/aggregator.py"]
               volumeMounts:
                 - mountPath: /latency
@@ -20,4 +20,4 @@ spec:
           volumes:
             - name: latencystore
               persistentVolumeClaim:
-                claimName: {{ .Values.latencyPVC.name }}
+                claimName: latency-pvc

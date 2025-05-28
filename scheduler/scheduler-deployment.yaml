@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-latency-scheduler
-  namespace: {{ .Values.namespace }}
+  namespace: kube-system
 spec:
-  replicas: {{ .Values.scheduler.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: my-latency-scheduler
@@ -16,11 +16,11 @@ spec:
       serviceAccountName: my-latency-scheduler-sa
       containers:
         - name: scheduler
-          image: {{ .Values.scheduler.image }}
+          image: sanjeevkrmenon/latent-scheduler:scheduler1    # REPLACE
           volumeMounts:
             - name: latencystore
               mountPath: /latency
       volumes:
         - name: latencystore
           persistentVolumeClaim:
-            claimName: {{ .Values.latencyPVC.name }}
+            claimName: latency-pvc

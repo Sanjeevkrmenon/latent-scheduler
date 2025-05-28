@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: latency-measure
-  namespace: latency-scheduler
+  namespace: kube-system
 spec:
   selector:
     matchLabels:
@@ -12,18 +12,17 @@ spec:
       labels:
         app: latency-measure
     spec:
-      serviceAccountName: latency-measure-sa
       containers:
         - name: measure
-          image: sanjeevkrmenon/latency-measure:latest
-          volumeMounts:
-            - mountPath: /latency
-              name: latencystore
+          image: sanjeevkrmenon/latency-measure:latest # REPLACE if needed
           env:
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+          volumeMounts:
+            - mountPath: /latency
+              name: latencystore
       volumes:
         - name: latencystore
           persistentVolumeClaim:
