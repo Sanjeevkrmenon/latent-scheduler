@@ -1,4 +1,4 @@
-Latency-Aware Kubernetes Scheduler 🌐
+**Latency-Aware Kubernetes Scheduler** 🌐
 
 A customizable, production-ready solution for network-aware scheduling in Kubernetes clusters.
 Automatically places pods on nodes with the lowest real-time network latency—perfect for performance-critical, distributed workloads.
